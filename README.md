@@ -8,8 +8,8 @@ Will need to check how to write a good readme I guess
 To do:
   Reread theory
   Finish up README.pdf
-  Write spherical harmonic generator code
+  Check spherical harmonic generator code - consider modifying for imaginary and orthogonal normalization
   Write Bessel function (spherical) generator code
   Pick a suitable lapack (probably Eigen)
-  Create a sketch of the algorithm + code
+  Create a sketch of the algorithm + code in pdf
   Go

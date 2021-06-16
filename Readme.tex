@@ -5,8 +5,10 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \numberwithin{equation}{section}
-\usepackage{xcolor}
+%\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{amsfonts}
+\usepackage{multirow}
 
 \begin{document}
 \title{Augmented Plane Wave Readme}
@@ -106,12 +108,49 @@ The matrix elements are the computational implementations of the APW method. We 
 \section{Code and ``Documentation"}
 
 \paragraph{Spherical Harmonic Generation}
-The code for generating the numerical results of the spherical harmonics is inspired from the paper \cite{spherHarm}. It's not really important but perhaps a good idea to keep in mind that the spherical harmonics are real and $4\pi$ normalized. Real spherical harmonics are defined with respect to "normal" spherical harmonics as \textcolor{red}{equation for multiple m}.
+The code for generating the numerical results of the spherical harmonics is inspired from the paper \cite{spherHarm}. It's not really important but perhaps a good idea to keep in mind that the spherical harmonics are real and $4\pi$ normalized. Real spherical harmonics are defined with respect to ``normal" spherical harmonics as 
+\begin{align}
+Y_l^m(\theta,\phi) = \left\{
+  \begin{array}{lr}
+    \frac{(-1)^m}{\sqrt{2}}(Y_l^m + Y_l^{\dagger_m}) & m > 0 \\
+    Y_l^0 & m = 0 \\
+    \frac{(-1)^m}{i\sqrt{2}}(Y_l^{|m|} - Y_l^{\dagger_{|m|}}) & m < 0
+  \end{array}
+\right.
+\end{align}
+and obey the conditions:
+Reality:
+\begin{equation}
+Y_l^{*_m}(\hat{r}) = Y_l^m(\hat{r})
+\end{equation}
+Parity:
+\begin{equation}
+Y_l^m(-\hat{r}) = (-1)^lY_l^m(\hat{r})
+\end{equation}
+Orthonormality:
+\begin{equation}
+\langle Y_l^m|Y_{l'}^{m'}\rangle_{\Omega} = \delta_{ll'}\delta_{mm'}
+\end{equation}
+
+Note that the theory did not make mention of real spherical harmonics. Given the properties just stated, it is irrelevant to the calculation of energy bands since in the variational method and matrix element calculation we employ the spherical harmonics within the APW functions in their inner product capacity, which does not deviate from the traditional complex spherical harmonics. The reason we use real functions is that they are easier to code and require half as much memory; there's no need to compute both a real and imaginary part.
+
+The computation of the spherical harmonics is done through a recursive algorithm proposed by Limpanuparb and Milthorpe for associated Legendre polynomials. Since spherical harmonics are nothing but normalized Legendre polynomials
+\begin{equation}
+Y_l^m(\theta,\phi) = (-1)^m\sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}}P_l^m(\cos\theta)e^{im\phi}
+\end{equation}
+the main task is then to compute any $P_l^m(\cos\theta)$. Luckily, there are a plethora of useful recursive relations at our disposal.
 
 \paragraph{Spherical Bessel Function Generation}
 I had planned on trying 2 different methods for computing spherical Bessel functions. One was similar to the spherical harmonics method in that the natural recursion relations of the Bessel functions would be used to compute an array of functions. It turns out this is not really possible since the Bessel functios, and therefure the spherical Bessel functions, do not have an exact closed form. Of course they had a good approximate asymptotic form for large arguments, but we'll want some smaller arguments too. Thus I'm only going to be doing the elegant method proposed by Harrison \cite{spherBessel}.
 
-It consists of breaking up the range of arguments into the small and large regime, then after having pretabulated the zeros, expand around the nearest zero to the argument \textcolor{red}{this isn't actually the whole story...I'll be elaborating later of course}.
+It consists of breaking up the range of arguments into the small and large regime, then using a convenient expansion around pretabulated zeroes for the small regime while sticking to traditional asymptotic expansions for the larger arguments. In this manner we save time during runtime and get arbitrarily accurate results. We can point out now that the paper discusses computing Bessel functions and Bessel functions of the second kind. In the APW method there's no need to implement the second kind se I will omit that from the discussion, though it it perhaps more interesting in a pedagogical sense than the first.
+
+\textit{Small Arguments:} A mathematica script is being implemented to generate the zeroes of the first 100 Bessel functions for the small arguments $x \leq 45$. These are in a tabular form where the first row indicates the zeroes of $J_0$, the second row those of $J_1$ and so on. This way when reading them from the C++ code at runtime, the lower order functions, which are used more frequently, are nearer to the top and faster to recall.
+
+
+
+
+
 
 
 

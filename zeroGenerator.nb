@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      1054,         38]
-NotebookOptionsPosition[       762,         25]
-NotebookOutlinePosition[      1105,         40]
-CellTagsIndexPosition[      1062,         37]
+NotebookDataLength[      3051,         84]
+NotebookOptionsPosition[      2447,         66]
+NotebookOutlinePosition[      2791,         81]
+CellTagsIndexPosition[      2748,         78]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -21,10 +21,51 @@ Notebook[{
 Cell["A Generator of Zeroes for the first 100 Bessel Functions", "Text",
  CellChangeTimes->{{3.832801121487808*^9, 
   3.8328011383937445`*^9}},ExpressionUUID->"bdaed08f-3421-4b3d-ad3c-\
-16026976588c"]
+16026976588c"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"a", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"N", "[", 
+      RowBox[{
+       RowBox[{"BesselJZero", "[", 
+        RowBox[{"i", ",", "j"}], "]"}], ",", "14"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "0", ",", "100"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"j", ",", "15"}], "}"}]}], "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.8328339306948957`*^9, 3.832833945329918*^9}, {
+  3.832834060491856*^9, 3.8328340879462547`*^9}, {3.8328341270552483`*^9, 
+  3.832834151110586*^9}, {3.83283434917871*^9, 3.832834358384296*^9}, {
+  3.832834457571916*^9, 3.83283446167062*^9}, {3.8328345389803133`*^9, 
+  3.8328345399865007`*^9}, {3.8328346265614047`*^9, 3.832834626882372*^9}},
+ CellLabel->"In[12]:=",ExpressionUUID->"739f5c75-d59a-4d68-bb88-eef02a12bfad"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<BesselZeroes.txt\>\"", ",", 
+   RowBox[{"Map", "[", 
+    RowBox[{"OutputForm", ",", "a", ",", 
+     RowBox[{"{", "2", "}"}]}], "]"}], ",", "\"\<Table\>\"", ",", 
+   RowBox[{"\"\<FieldSeperators\>\"", " ", "\[Rule]", "\"\<  \>\""}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.832834168363263*^9, 3.8328341725096617`*^9}, {
+  3.8328342236507807`*^9, 3.8328342237913027`*^9}, {3.832834435788973*^9, 
+  3.8328344389790354`*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"50a91a5c-75fd-423a-a07e-6770c421c896"],
+
+Cell[BoxData["\<\"BesselZeroes.txt\"\>"], "Output",
+ CellChangeTimes->{3.8328341787600417`*^9, 3.8328342259854145`*^9, 
+  3.8328343697654924`*^9, 3.83283464502864*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"3bf32708-0fa2-485c-8ab1-34b5536df363"]
+}, Open  ]]
 },
 WindowSize->{759, 697},
-WindowMargins->{{Automatic, 380}, {24, Automatic}},
+WindowMargins->{{Automatic, 215}, {-11, Automatic}},
 FrontEndVersion->"12.0 for Microsoft Windows (64-bit) (April 8, 2019)",
 StyleDefinitions->"Default.nb"
 ]
@@ -39,10 +80,13 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 200, 3, 34, "Text",ExpressionUUID->"bdaed08f-3421-4b3d-ad3c-16026976588c"]
+Cell[558, 20, 200, 3, 34, "Text",ExpressionUUID->"bdaed08f-3421-4b3d-ad3c-16026976588c"],
+Cell[761, 25, 838, 18, 28, "Input",ExpressionUUID->"739f5c75-d59a-4d68-bb88-eef02a12bfad"],
+Cell[CellGroupData[{
+Cell[1624, 47, 558, 11, 28, "Input",ExpressionUUID->"50a91a5c-75fd-423a-a07e-6770c421c896"],
+Cell[2185, 60, 246, 3, 65, "Output",ExpressionUUID->"3bf32708-0fa2-485c-8ab1-34b5536df363"]
+}, Open  ]]
 }
 ]
 *)
-
-(* End of internal cache information *)
 

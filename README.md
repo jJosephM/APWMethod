@@ -7,9 +7,11 @@ Will need to check how to write a good readme I guess
 
 To do:
   Reread theory
-  Finish up README.pdf
+  Keep writing README.pdf
   Check spherical harmonic generator code
-  Write Bessel function (spherical) generator code
+  Finish reading Bessel function paper
+    Write Mathematia script
+    Write rest of code for generator
   Pick a suitable lapack (probably Eigen)
   Create a sketch of the algorithm + code in pdf
   Go

@@ -24,13 +24,17 @@ I'll begin by restating the Bloch Theorem:
 \begin{equation}
 \psi_{\vec{k}}(\vec{r} + \vec{R}) = e^{-i \vec{k}\cdot\vec{R}} \psi_{\vec{k}}(\vec{r})
 \end{equation}
-It is the statement that the orbital wavefunctions of bound electrons in a crystal are periodic but for a phase factor. $\vec{R}$ is any lattice vector and the wavevector $\vec{k}$ is of course a new quantum number analogous to momentum but for the case of periodic translational symmetry - discrete symmetry. We tend to call it the crystal momentum but I think it's more intuitive to consider it as a mathematical product of the expansion of our wavefunction in a Fourier series with the periodicity of the lattice. By this I mean that the wavefunction can be an expansion of its spatial harmonics.
+It is the statement that the orbital wavefunctions of bound electrons in a crystal are periodic but for a phase factor. $\vec{R}$ is any lattice vector and the wavevector $\vec{k}$ is of course a new quantum number (or rather 3) analogous to momentum but for the case of periodic translational symmetry - discrete symmetry. We tend to call it the crystal momentum but I think it's more intuitive to consider it as a mathematical product of the expansion of our wavefunction in a Fourier series with the periodicity of the lattice. By this I mean that the wavefunction can be an expansion of its spatial harmonics.
 
 Then it's straightforward to see that if the wavevector $\vec{k}$ is a reciprocal lattice vector,
 \begin{equation}
 e^{-i\vec{k}\cdot\vec{R}} = e^{-i2\pi\cdot integer} = 1
 \end{equation}
-This statement is not a restriction but a freedom. It means that $\vec{k}$ does not uniquely label the state and is invariant under the addition of a reciprocal lattice vector. We can thus work wholly in the 1st Brillouin zone, the volume in reciprocal space enclosed by Bragg planes.
+This statement is not a restriction but a freedom. It means that $\vec{k}$ does not uniquely label the state and is invariant under the addition of a reciprocal lattice vector. The wavefunction is periodic so the region of interest is repeated and we can thus work wholly in the 1st Brillouin zone, the volume in reciprocal space enclosed by Bragg planes.
+
+The nature of band theory is interesting and worth explaining here. Basically, everything is the result of the Pauli principle. Two identical atoms will have their electrons in orbitals labeled by the usual orbital quantum numbers $n,l,m$. If we bring them together to form a diatomic molecule, the exclusion principle will force those energy levels to adjust or split. Similarly, if we were able to bring in more and more atoms to form a crystal, there would continue to be energy splitting but of course, the total energy remains the same; the energies don't just add. All the N atoms' electrons must change their energies to obey the exclusion principle while spanning the energy of the individual atoms before they were bound to form the crystal. The resulting energy landscape is the so-called band theory of electrons.
+
+We know that these electrons obey Bloch's theorem and are governed by the Schrodinger equation. Upon substitution into the Schrodinger equation for a specified $\vec{k}$, the solution will be valid for $n$ different eigenenergies. A different $\vec{k}$ will also yield $n$ energies of \textit{different} values. The wavevectors are labeled by the energy level, or conversely, the energy levels are functions of the wavevector. Since we are cramming N different energies into the Brillouin zone, and as usual N is fucking huge, the resolution between various energy-wavevector values is small enough to be considered continuous: we can describe n energy levels as continuous functions of $\vec{k}$ over the domain of the Brillouin zone. The particular form of these energies is the objective of band-theory methods like APW.
 
 \paragraph{Muffin-Tin Potential}
 The muffin-tin approximation builds off the cellular method where we simply solve the Schrodinger equation in the Brillouin zone. The cellular method was first proposed by Wigner and Seitz and used to calculate the 2s band for sodium (I think). A difficulty with the cellular method is that the continuity of the wavefunction and its derivative must be satisfied over the boundary of the primitive cell, which could be, in principle, any arbitrary shape. Another is that the single ionic potential over the cell isn't the best approximation, in addition to not being smooth over the boundary. The muffin-tin potential takes care of both of these problems by approximating the cell, or more accurately the potential inside it, as a sphere
@@ -50,7 +54,7 @@ The APW method is built around an expansion of the wavefunction in \textit{augme
 \item Inside the core region, $\chi$ \textit{does} satisfy the Schrodinger equation and is taken as a superposition of spherical solutions $\chi_{\vec{k}} = \sum_{l,m}A_{lm}Y_{lm}(\hat{n})R_l(r)$. Since there is no wavevector in this equation, $H\chi_{\vec{k}} = E\chi_{\vec{k}}$ where $E$ is independent of $\vec{k}$, the $\vec{k}$ value is acquired through the boundary condition.
 \end{enumerate}
 
-To show this last point we can see how the continuity is enforced by specifying a specific set of coefficients $A_{lm}$. Just outside any sphere, $\chi_{\vec{k}} = e^{i\vec{k}\cdot\vec{r}} = d^{i\vec{k}\cdot(\vec{r} + \vec{\rho}} = e^{i\vec{k}\cdot\vec{r}}e^{i\vec{k}\cdot\vec{\rho}}$. Expanding the last plane wave in spherical harmonics,
+To show this last point we can see how the continuity is enforced by specifying a specific set of coefficients $A_{lm}$. Just outside any sphere, $\chi_{\vec{k}} = e^{i\vec{k}\cdot\vec{r}} = e^{i\vec{k}\cdot(\vec{r}_{\nu} + \vec{\rho})} = e^{i\vec{k}\cdot\vec{r}_{\nu}}e^{i\vec{k}\cdot\vec{\rho}}$ where $\vec{r}_{\nu}$ is the center of a site and $\vec{\rho}$ is the distance from the center to the point in question. Expanding the last plane wave in spherical harmonics,
 \begin{equation}
 e^{i\vec{k}\cdot\vec{\rho}} = 4\pi\sum_{l,m}i^l j_l(k\rho)Y^*_{lm}(\hat{k})Y_{lm}(\hat{n})
 \end{equation}
@@ -104,11 +108,12 @@ The matrix elements are the computational implementations of the APW method. We 
 
 
 \section{Practical Aspects and the Algorithm}
+This is perhaps the most difficult part...how much do I want to do with this code? Originally I was thinking of progressively making it as general as possible: any crystal one can empirically solve. But, that is quite a lot to do. Considering the implementations that have to be considered to make a user friendly code that will compute the APW bands for ``any" crystal, I have decided to go the other route. In Ashcroft and Mermin, there are 2 \textcolor{red}{check this} examples of APW calculations given. I have decided to recreate those solutions and those alone. It's only APW; if I were doing something more serious (Hartree-Fock, DFT) I would most likely implement some sort of general input method.
 
 \section{Code and ``Documentation"}
 
 \paragraph{Spherical Harmonic Generation}
-The code for generating the numerical results of the spherical harmonics is inspired from the paper \cite{spherHarm}. It's not really important but perhaps a good idea to keep in mind that the spherical harmonics are real and $4\pi$ normalized. Real spherical harmonics are defined with respect to ``normal" spherical harmonics as 
+The code for generating the numerical results of the spherical harmonics is inspired from the paper \cite{spherHarm}. It's not really important but perhaps a good idea to keep in mind that the spherical harmonics are real and $4\pi$ normalized. Real spherical harmonics are defined with respect to ``normal" spherical harmonics as \cite{realSH}
 \begin{align}
 Y_l^m(\theta,\phi) = \left\{
   \begin{array}{lr}
@@ -140,12 +145,16 @@ Y_l^m(\theta,\phi) = (-1)^m\sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}}P_l^m(\cos\thet
 \end{equation}
 the main task is then to compute any $P_l^m(\cos\theta)$. Luckily, there are a plethora of useful recursive relations at our disposal.
 
+The goal is to calculate $P_l^m(x)$ for any valid $l,m$ and $x$. $P_0^0$ is a constant and $P_1^0$ is proportional to $x$. From there 
+
 \paragraph{Spherical Bessel Function Generation}
 I had planned on trying 2 different methods for computing spherical Bessel functions. One was similar to the spherical harmonics method in that the natural recursion relations of the Bessel functions would be used to compute an array of functions. It turns out this is not really possible since the Bessel functios, and therefure the spherical Bessel functions, do not have an exact closed form. Of course they had a good approximate asymptotic form for large arguments, but we'll want some smaller arguments too. Thus I'm only going to be doing the elegant method proposed by Harrison \cite{spherBessel}.
 
 It consists of breaking up the range of arguments into the small and large regime, then using a convenient expansion around pretabulated zeroes for the small regime while sticking to traditional asymptotic expansions for the larger arguments. In this manner we save time during runtime and get arbitrarily accurate results. We can point out now that the paper discusses computing Bessel functions and Bessel functions of the second kind. In the APW method there's no need to implement the second kind se I will omit that from the discussion, though it it perhaps more interesting in a pedagogical sense than the first.
 
-\textit{Small Arguments:} A mathematica script is being implemented to generate the zeroes of the first 100 Bessel functions for the small arguments $x \leq 45$. These are in a tabular form where the first row indicates the zeroes of $J_0$, the second row those of $J_1$ and so on. This way when reading them from the C++ code at runtime, the lower order functions, which are used more frequently, are nearer to the top and faster to recall.
+\textit{Small Arguments:} A mathematica script is implemented to generate the zeroes of the first 100 Bessel functions for the small arguments $x \leq 45$. These are in a tabular form where the first row indicates the zeroes of $J_0$, the second row those of $J_1$ and so on. This way when reading them from the C$++$ code at runtime, the lower order functions, which are used more frequently, are nearer to the top. In some ways this is overkill because we might never end up using the higher order Bessel functions and even if we did, starting at $J_{40}$ there are no zeroes less than 45, which is the ``cutoff" for the small argument portion of the code.
+
+Next, in the body of the code, we can start by reducing the argument $x$ to $r = x - z_k$, where $z-k$ is the closest zero to $x$. In fact we can reduce it further by 
 
 
 
@@ -168,6 +177,9 @@ It consists of breaking up the range of arguments into the small and large regim
 \bibitem{spherBessel}
   J. Harrison. \textit{Fast and Accurate Bessel Function Computation} Intel Corporation \\
   \textit{Retrieved at } https://www.cl.cam.ac.uk/~jrh13/papers/bessel.pdf
+  
+\bibitem{realSH}
+  M. Blanco, M. Florez, M. Bermejo. J. Mol. Struct. THEOCHEM 419, 19-27 (1997)
   
 
 \end{thebibliography}
